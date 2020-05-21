@@ -47,7 +47,28 @@ class NewUserVC: UITableViewController {
     
     @objc
     func doneButtonPressed() {
-        // Create Item
+        
+        var name = ""
+        var headline = ""
+        
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldCell, let nameField = cell.nameField.text {
+            name = nameField
+        }
+        
+        if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextFieldCell, let headlineField = cell.nameField.text {
+            headline = headlineField
+        }
+        
+        let context = CoreDataManager.shared.persistentContainer.viewContext
+        let newItem = UserList(context: context)
+        
+        newItem.name = name
+        newItem.headline = headline
+        
+        users.append(newItem)
+        
+        CoreDataManager.shared.saveContext()
+        
         self.dismiss(animated: true, completion: nil)
     }
 }

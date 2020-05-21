@@ -8,6 +8,8 @@
 
 import UIKit
 
+var users = [UserList]()
+
 class HomeVC: UITableViewController {
     
     let titleSubCellID = "titleSubCellID"
@@ -15,6 +17,7 @@ class HomeVC: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        tableView.reloadData()
     }
 
     override func viewDidLoad() {
@@ -22,6 +25,7 @@ class HomeVC: UITableViewController {
         
         setupNavBar()
         setupTableView()
+        loadData()
     }
     
     private func setupNavBar() {
@@ -40,6 +44,11 @@ class HomeVC: UITableViewController {
         tableView.register(TitleSubCell.self, forCellReuseIdentifier: titleSubCellID)
     }
     
+    private func loadData() {
+        let shared = CoreDataManager.shared
+        users = shared.findAllForEntity("UserList") as! [UserList]
+    }
+    
     @objc
     func addUserButtonPressed() {
         let nav = UINavigationController(rootViewController: NewUserVC())
@@ -55,14 +64,14 @@ extension HomeVC {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return users.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: titleSubCellID) as! TitleSubCell
         
-        cell.title = "Title"
-        cell.subTitle = "Sub Title"
+        cell.title = users[indexPath.row].name
+        cell.subTitle = users[indexPath.row].headline
         
         return cell
     }
