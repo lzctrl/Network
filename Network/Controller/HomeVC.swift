@@ -108,7 +108,15 @@ extension HomeVC {
         }
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
-            // TODO: Delete item
+            let context = CoreDataManager.shared.persistentContainer.viewContext
+            let deletingUser = users[row]
+            
+            users.remove(at: row)
+            context.delete(deletingUser)
+            
+            CoreDataManager.shared.saveContext()
+        
+            tableView.deleteRows(at: [indexPath], with: .left)
         }
         
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])

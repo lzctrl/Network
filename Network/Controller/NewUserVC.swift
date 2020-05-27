@@ -63,11 +63,16 @@ class NewUserVC: UITableViewController {
         }
         
         let context = CoreDataManager.shared.persistentContainer.viewContext
-        let newItem = UserList(context: context)
         
         if isEditingUser {
-            // TODO: Update the editing user
+            if let row = selectedRow {
+                let editedUser = users[row]
+                editedUser.name = name
+                editedUser.headline = headline
+            }
         } else {
+            let newItem = UserList(context: context)
+
             newItem.name = name
             newItem.headline = headline
             
