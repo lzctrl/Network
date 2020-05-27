@@ -14,6 +14,13 @@ class NewUserVC: UITableViewController {
     
     let placeholders = ["Name", "Headline"]
     
+    var selectedRow: Int?
+    
+    var name: String = ""
+    var headline: String = ""
+    
+    var isEditingUser: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,25 +54,25 @@ class NewUserVC: UITableViewController {
     
     @objc
     func doneButtonPressed() {
-        
-        var name = ""
-        var headline = ""
-        
-        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldCell, let nameField = cell.nameField.text {
+        if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? TextFieldCell, let nameField = cell.titleField.text {
             name = nameField
         }
         
-        if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextFieldCell, let headlineField = cell.nameField.text {
+        if let cell = tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? TextFieldCell, let headlineField = cell.titleField.text {
             headline = headlineField
         }
         
         let context = CoreDataManager.shared.persistentContainer.viewContext
         let newItem = UserList(context: context)
         
-        newItem.name = name
-        newItem.headline = headline
-        
-        users.append(newItem)
+        if isEditingUser {
+            // TODO: Update the editing user
+        } else {
+            newItem.name = name
+            newItem.headline = headline
+            
+            users.append(newItem)
+        }
         
         CoreDataManager.shared.saveContext()
         
@@ -84,8 +91,16 @@ extension NewUserVC {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: textFieldCellID) as! TextFieldCell
-        
+        let row = indexPath.row
         cell.placeholder = placeholders[indexPath.row]
+        
+        if isEditingUser {
+            if row == 0 {
+                cell.title = name
+            } else {
+                cell.title = headline
+            }
+        }
         
         return cell
     }
