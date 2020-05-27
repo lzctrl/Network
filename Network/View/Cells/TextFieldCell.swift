@@ -17,15 +17,15 @@ class TextFieldCell: UITableViewCell {
     var placeholder: String? {
         didSet {
             if let placeholder = placeholder {
-                nameField.placeholder = placeholder
+                titleField.placeholder = placeholder
             }
         }
     }
     
-    var name: String? {
+    var title: String? {
         didSet {
-            if let name = name {
-                nameField.text = name
+            if let title = title {
+                titleField.text = title
             }
         }
     }
@@ -34,7 +34,7 @@ class TextFieldCell: UITableViewCell {
     // MARK: Views
     // -----------------------------------------
     
-    lazy var nameField: UITextField = {
+    lazy var titleField: UITextField = {
         let tf = UITextField()
         tf.delegate = self
         tf.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,7 @@ class TextFieldCell: UITableViewCell {
     }
 
     private func setupUI() {
-        self.addSubview(nameField)
+        self.addSubview(titleField)
         
         setNameFieldConstraints()
     }
@@ -71,11 +71,11 @@ class TextFieldCell: UITableViewCell {
         let margins = self.layoutMarginsGuide
         
         NSLayoutConstraint.activate([
-            nameField.topAnchor.constraint(equalTo: margins.topAnchor),
-            nameField.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-            nameField.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-            nameField.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
-            nameField.heightAnchor.constraint(greaterThanOrEqualToConstant: 25.0)
+            titleField.topAnchor.constraint(equalTo: margins.topAnchor),
+            titleField.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            titleField.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+            titleField.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
+            titleField.heightAnchor.constraint(greaterThanOrEqualToConstant: 25.0)
         ])
     }
 

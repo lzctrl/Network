@@ -83,4 +83,34 @@ extension HomeVC {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 10
     }
+    
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let row = indexPath.row
+        
+        let editAction = UIContextualAction(style: .normal, title: "Edit") { (action, view, completion) in
+            let vc = NewUserVC()
+            
+            vc.selectedRow = row
+            vc.isEditingUser = true
+            
+            vc.name = users[row].name ?? ""
+            vc.headline = users[row].headline ?? ""
+            
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            nav.modalTransitionStyle = .coverVertical
+            
+            self.present(nav, animated: true, completion: nil)
+        }
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { (action, view, completion) in
+            // TODO: Delete item
+        }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+    }
 }
